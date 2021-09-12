@@ -1,0 +1,157 @@
+﻿<Window x:Class="Weather_APP_MAL.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Weather_APP_MAL"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Title="MainWindow" Height="550" Width="1000">
+    <Grid Background="#333333">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Background="#444444" Grid.ColumnSpan="2" MouseDown="TopBarDrag">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Left" Text="Weather App" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" FontSize="20" FontFamily="Fonts/#Merriweather " Margin="10,0,0,0"/>
+            <Button Grid.Column="5 " Margin="169,4,4,4" Width="27" Height="27" Click="Button_Click">
+                <Image Source="/Img/close.png" Margin="2"/>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#aaa"/>
+                        <Setter Property="BorderThickness" Value=".7"/>
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#bbb"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#aaa"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Grid.Column="5" Click="Button_Minimize" Margin="137,4,0,4" Width="27" Height="27" HorizontalAlignment="Left">
+                <Image Source="/Img/mini.png" Margin="2"/>
+                <Button.Resources> 
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#aaa"/>
+                        <Setter Property="BorderThickness" Value=".7"/>
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#bbb"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#aaa"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2">
+            <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                <Image Height="250" Width="250" Margin="0,0,0,25" Source="/Img/icon.png" RenderOptions.BitmapScalingMode="Fant"/>
+                <StackPanel>
+                    <Grid>
+                        <TextBox x:Name="SearchTermTextBox" KeyDown="SearchTermTextBox_KeyDown" Height="70" TextWrapping="NoWrap" Margin="10" FontFamily="/Fonts/#Merriweather" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="4,0,0,0" FontSize="46">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
+                        <TextBlock IsHitTestVisible="False" Text="Enter Location" FontFamily="/Fonts/#Merriweather" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" Foreground="DarkGray" FontSize="46">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <Button Content="Search" FontSize="50" Height="65" Margin="10" FontWeight="SemiBold" FontFamily="/Fonts/#Merriweather Bold" Click="Button_Click_Search">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="20"/>
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Setter Property="BorderThickness" Value="2 "/>
+                            </Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Background" Value="LightGray"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#bbb"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#aaa"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <TextBlock x:Name="TextBoxWeather" Grid.Column="1" Margin="10,0,10,0" Grid.Row="1" FontFamily="/Fonts/#Merriweather Light" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Height="495" Foreground="White" FontSize="30" FontWeight="Normal"/>
+
+
+
+    </Grid>
+</Window>
