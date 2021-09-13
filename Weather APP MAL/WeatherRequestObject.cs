@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Weather_APP_MAL {
-    public class LocationRoot {
+    public class WeatherRequestObject {
         [JsonProperty("location")]
         public Location Location { get; set; }
         [JsonProperty("current")]

@@ -9,31 +9,31 @@ namespace Weather_APP_MAL {
     public partial class MainWindow : Window {
 
         readonly WebClient client = new();
-        string content = "";
 
-        public MainWindow() {
-            InitializeComponent();
+        public MainWindow() => InitializeComponent();
+
+        private void Button_Close(object sender, RoutedEventArgs e) => Close();
+
+        private void Button_Minimize(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+
+        private void Button_Search(object sender, RoutedEventArgs e) => RunSearch();
+
+        private void TopBarDrag(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+                DragMove();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            Close();
-        }
-
-        private void Button_Click_Search(object sender, RoutedEventArgs e) => RunSearch();
-
-
-        private void SearchTermTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+        private void Search_Box_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(e.Key == System.Windows.Input.Key.Enter)
                 RunSearch();
         }
 
-
         private void RunSearch() {
-            string weatherInfoString = string.Empty;
+            string weatherInfoString = string.Empty, content;
 
-            if (!string.IsNullOrWhiteSpace(SearchTermTextBox.Text)) {
+            if (!string.IsNullOrWhiteSpace(SearchBox.Text)) {
                 try {
-                    content = client.DownloadString($"http://api.weatherapi.com/v1/current.json?key={Key.API_KEY}&q={SearchTermTextBox.Text}&aqi=no");
+                    content = client.DownloadString($"https://api.weatherapi.com/v1/current.json?key={Key.API_KEY}&q={SearchBox.Text}&aqi=no");
                 }
                 catch (Exception) {
                     TextBoxWeather.Text = "Location not found";
@@ -44,33 +44,18 @@ namespace Weather_APP_MAL {
                 return;
             }
 
-            LocationRoot loc = JsonConvert.DeserializeObject<LocationRoot>(content);
+            WeatherRequestObject loc = JsonConvert.DeserializeObject<WeatherRequestObject>(content);
 
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(loc.Location)) {
-                string name = descriptor.Name;
-                object value = descriptor.GetValue(loc.Location);
-                weatherInfoString += $"{name}: {value}\n";
-            }
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(loc.Location))
+                weatherInfoString += $"{descriptor.Name}: {descriptor.GetValue(loc.Location)}\n";
 
             weatherInfoString += "\n";
 
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(loc.CurrentTemp)) {
-                string name = descriptor.Name;
-                object value = descriptor.GetValue(loc.CurrentTemp);
-                weatherInfoString += $"{name}: {value}\n";
-            }
-            weatherInfoString = weatherInfoString.Replace("_", " ");
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(loc.CurrentTemp)) 
+                weatherInfoString += $"{descriptor.Name}: {descriptor.GetValue(loc.CurrentTemp)}\n";
 
-            TextBoxWeather.Text = weatherInfoString;
+            TextBoxWeather.Text = weatherInfoString.Replace("_", " ");
         }
 
-        private void TopBarDrag(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
-                this.DragMove();
-        }
-
-        private void Button_Minimize(object sender, RoutedEventArgs e) {
-            WindowState = WindowState.Minimized;
-        }
     }
 }
