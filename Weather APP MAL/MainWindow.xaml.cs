@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows;
-using Newtonsoft.Json;
-using System.Net;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
+using System.Net;
+using System.Windows;
 
 namespace Weather_APP_MAL {
 
@@ -24,7 +24,7 @@ namespace Weather_APP_MAL {
         }
 
         private void Search_Box_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == System.Windows.Input.Key.Enter)
                 RunSearch();
         }
 
@@ -51,7 +51,7 @@ namespace Weather_APP_MAL {
 
             weatherInfoString += "\n";
 
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(loc.CurrentTemp)) 
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(loc.CurrentTemp))
                 weatherInfoString += $"{descriptor.Name}: {descriptor.GetValue(loc.CurrentTemp)}\n";
 
             TextBoxWeather.Text = weatherInfoString.Replace("_", " ");
