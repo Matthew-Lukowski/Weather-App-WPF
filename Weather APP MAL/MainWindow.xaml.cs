@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
-using System.Net;
+using System.Net.Http;
 using System.Windows;
 
 namespace Weather_APP_MAL {
 
     public partial class MainWindow : Window {
 
-        readonly WebClient client = new();
+        readonly HttpClient client = new();
 
         public MainWindow() => InitializeComponent();
 
@@ -33,7 +33,7 @@ namespace Weather_APP_MAL {
 
             if (!string.IsNullOrWhiteSpace(SearchBox.Text)) {
                 try {
-                    content = client.DownloadString($"https://api.weatherapi.com/v1/current.json?key={Key.API_KEY}&q={SearchBox.Text}&aqi=no");
+                    content = client.GetStringAsync($"https://api.weatherapi.com/v1/current.json?key={Key.API_KEY}&q={SearchBox.Text}&aqi=no").Result;
                 }
                 catch (Exception) {
                     TextBoxWeather.Text = "Location not found";
